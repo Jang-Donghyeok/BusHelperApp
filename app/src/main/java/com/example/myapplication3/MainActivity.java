@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             MainActivity3.class); // 다음 넘어갈 클래스 지정
                     startActivity(intent);
                 }
-        }
+        } 
     }
 
     public void connect() {
