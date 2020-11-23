@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class MainActivity2 extends AppCompatActivity implements View.OnClickListener {
     EditText et_id, et_pass, et_passck, et_name, et_age, et_hak, et_maj;
-    Button btn_register;
+    Button btn_register, validateButton;
     private String html = "";
     private Handler mHandler;
     private Socket socket;
@@ -36,11 +36,13 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
     private String ip = "10.0.2.2"; // IP 번호
     private int port = 9999; // port 번호
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);  // layout xml 과 자바파일을 연결
-        btn_register = (Button)findViewById(R.id.btn_register);;
+        btn_register = (Button) findViewById(R.id.btn_register);
+        validateButton = (Button) findViewById(R.id.validateButton);
         btn_register.setOnClickListener(this);
         et_id = findViewById(R.id.et_id);
         et_pass = findViewById(R.id.et_pass);
@@ -54,14 +56,19 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.btn_register: // ip 받아오는 버튼
                 connect();
+                break;
+            case R.id.validateButton:
+                connect2();
+                break;
         }
     }
-    public void connect(){
+
+    public void connect() {
         mHandler = new Handler();
-        Log.w("connect","연결 하는중");
+        Log.w("connect", "연결 하는중");
 // 받아오는거
         Thread checkUpdate = new Thread() {
             public void run() {
@@ -75,12 +82,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                     e1.printStackTrace();
                 }
 
-                Log.w("edit 넘어가야 할 값 : ","안드로이드에서 서버로 연결요청");
+                Log.w("edit 넘어가야 할 값 : ", "안드로이드에서 서버로 연결요청");
 
                 try {
                     dos = new DataOutputStream(socket.getOutputStream());// output에 보낼꺼 넣음
-                    String msg= et_id.getText().toString() +","+et_pass.getText().toString()+","+et_passck.getText().toString() +","+et_name.getText().toString()
-                            +","+et_age.getText().toString()+","+et_hak.getText().toString()+","+et_maj.getText().toString();
+                    String msg = et_id.getText().toString() + ":" + et_pass.getText().toString() + ":" + et_passck.getText().toString() + ":" + et_name.getText().toString()
+                            + ":" + et_age.getText().toString() + ":" + et_hak.getText().toString() + ":" + et_maj.getText().toString();
                     dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
                     dos.writeUTF(msg);
 
@@ -88,19 +95,17 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                     e.printStackTrace();
                     Log.w("버퍼", "버퍼생성 잘못됨");
                 }
-                Log.w("버퍼","버퍼생성 잘됨");
+                Log.w("버퍼", "버퍼생성 잘됨");
 
 // 서버에서 계속 받아옴 - 한번은 문자, 한번은 숫자를 읽음. 순서 맞춰줘야 함.
                 try {
                     String line = "";
                     int line2;
-                    while(true) {
-                        line = (String)dis.readUTF();
-                        line2 = (int)dis.read();
-                        Log.w("서버에서 받아온 값 ",""+line);
-                        Log.w("서버에서 받아온 값 ",""+line2);
+                    while (true) {
+                        line = (String) dis.readUTF();
+                        Log.w("서버에서 받아온 값 ", "" + line);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -108,5 +113,33 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 // 소켓 접속 시도, 버퍼생성
         checkUpdate.start();
     }// end onCreate()
-} // end MyTwo
+
+    public void connect2() {
+        mHandler = new Handler();
+        Log.w("connect", "연결 하는중");
+// 받아오는거
+        Thread checkUpdate = new Thread() {
+            public void run() {
+                try {
+                    socket = new Socket(ip, port);
+                    Log.w("서버 접속됨", "서버 접속됨");
+                } catch (IOException e1) {
+                    Log.w("서버접속못함", "서버접속못함");
+                    e1.printStackTrace();
+                }
+                try {
+                    dos = new DataOutputStream(socket.getOutputStream());// output에 보낼꺼 넣음
+                    String msg = et_id.getText().toString();
+                    dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
+                    dos.writeUTF(msg);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.w("버퍼", "버퍼생성 잘못됨");
+                }
+            }
+        };
+        checkUpdate.start();
+    }
+}// end MyTwo
 
