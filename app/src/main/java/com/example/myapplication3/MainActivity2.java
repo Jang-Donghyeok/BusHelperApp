@@ -91,6 +91,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                     dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
                     dos.writeUTF(msg);
 
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.w("버퍼", "버퍼생성 잘못됨");

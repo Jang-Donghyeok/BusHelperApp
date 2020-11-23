@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn_login;
     private Handler mHandler;
     private Socket socket;
-    String line;
+    int line;
 
     DataOutputStream dos;
     DataInputStream dis;
@@ -59,13 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_login: // ip 받아오는 버튼
                 connect();
-                if (line == "Login OK"){
-                    Intent intent = new Intent(
-                            getApplicationContext(), // 현재 화면의 제어권자
-                            MainActivity3.class); // 다음 넘어갈 클래스 지정
-                    startActivity(intent);
-                }
-        } 
+        }
     }
 
     public void connect() {
@@ -94,10 +88,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                     Log.w("버퍼", "버퍼생성 잘못됨");
                 }
+                Log.w("버퍼","버퍼생성 잘됨");
+
                 try {
-                    int line2;
+                    byte line2;
                     while (true) {
-                        line = (String) dis.readUTF();
+                        System.out.println("123");
+                        line = dis.readByte();
+                        System.out.println(line);
+                        if (line == 49){
+                            Intent intent = new Intent(
+                                    getApplicationContext(), // 현재 화면의 제어권자
+                                    MainActivity3.class); // 다음 넘어갈 클래스 지정
+                            startActivity(intent);
+                        }
                         Log.w("서버에서 받아온 값 ", "" + line);
                     }
                 } catch (Exception e) {
@@ -107,4 +111,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         checkUpdate.start();
     }
+
 }
