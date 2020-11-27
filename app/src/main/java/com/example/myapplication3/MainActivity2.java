@@ -1,6 +1,7 @@
 package com.example.myapplication3;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -26,10 +27,13 @@ import java.util.ArrayList;
 
 public class MainActivity2 extends AppCompatActivity implements View.OnClickListener {
     EditText et_id, et_pass, et_passck, et_name, et_age, et_hak, et_maj;
-    Button btn_register, validateButton;
+    Button btn_register,validateButton;
     private String html = "";
     private Handler mHandler;
     private Socket socket;
+    int line;
+    boolean line2;
+
 
     DataOutputStream dos;
     DataInputStream dis;
@@ -44,6 +48,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         btn_register = (Button) findViewById(R.id.btn_register);
         validateButton = (Button) findViewById(R.id.validateButton);
         btn_register.setOnClickListener(this);
+        validateButton.setOnClickListener(this);
         et_id = findViewById(R.id.et_id);
         et_pass = findViewById(R.id.et_pass);
         et_passck = findViewById(R.id.et_passck);
@@ -57,11 +62,13 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.validateButton:
+                System.out.println(line);
+                connect2();
+                break;
             case R.id.btn_register: // ip 받아오는 버튼
                 connect();
-                break;
-            case R.id.validateButton:
-                connect2();
+                show4();
                 break;
         }
     }
@@ -86,7 +93,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
                 try {
                     dos = new DataOutputStream(socket.getOutputStream());// output에 보낼꺼 넣음
-                    String msg = et_id.getText().toString() + ":" + et_pass.getText().toString() + ":" + et_passck.getText().toString() + ":" + et_name.getText().toString()
+                    String msg ="Register:" +et_id.getText().toString() + ":" + et_pass.getText().toString() + ":" + et_passck.getText().toString() + ":" + et_name.getText().toString()
                             + ":" + et_age.getText().toString() + ":" + et_hak.getText().toString() + ":" + et_maj.getText().toString();
                     dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
                     dos.writeUTF(msg);
@@ -100,10 +107,9 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
 // 서버에서 계속 받아옴 - 한번은 문자, 한번은 숫자를 읽음. 순서 맞춰줘야 함.
                 try {
-                    String line = "";
-                    int line2;
+                    line = dis.readByte();
                     while (true) {
-                        line = (String) dis.readUTF();
+                        line = dis.readByte();
                         Log.w("서버에서 받아온 값 ", "" + line);
                     }
                 } catch (Exception e) {
@@ -130,7 +136,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 }
                 try {
                     dos = new DataOutputStream(socket.getOutputStream());// output에 보낼꺼 넣음
-                    String msg = et_id.getText().toString();
+                    String msg = "Register_ID:"+et_id.getText().toString();
                     dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
                     dos.writeUTF(msg);
 
@@ -138,9 +144,49 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                     e.printStackTrace();
                     Log.w("버퍼", "버퍼생성 잘못됨");
                 }
+                try {
+                    line = dis.readByte();
+                    while (true) {
+                        line = dis.readByte();
+                        if (line == 49){
+                            show();
+                            line2 = true;
+                        }else {
+                            show2();
+                        }
+                            Log.w("서버에서 받아온 값 ", "" + line);
+                    }
+                } catch (Exception e) {
+
+                }
             }
         };
         checkUpdate.start();
     }
-}// end MyTwo
+    void show(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("아이디 중복").setMessage("아이디가 사용가능합니다.");
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    void show2(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("아이디 중복").setMessage("이미 사용중인 아이디입니다.");
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    void show3(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("회원가입").setMessage("아이디 중복검사를 하십시오.");
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    void show4(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("회원가입완료").setMessage("회원가입이 완료되었습니다.");
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
+
+}// end MyTwo
