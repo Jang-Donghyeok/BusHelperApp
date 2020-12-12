@@ -23,12 +23,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn_login;
     private Handler mHandler;
     private Socket socket;
-    int line;
+    byte line;
 
     DataOutputStream dos;
     DataInputStream dis;
 
-    private String ip = "10.0.2.2"; // IP 번호
+    private String ip = "192.168.1.103"; // IP 번호
     private int port = 9999; // port 번호
 
     @Override

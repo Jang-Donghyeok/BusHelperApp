@@ -31,14 +31,15 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     private String html = "";
     private Handler mHandler;
     private Socket socket;
-    int line;
+    byte line;
+    String data;
     boolean line2;
 
 
     DataOutputStream dos;
     DataInputStream dis;
 
-    private String ip = "10.0.2.2"; // IP 번호
+    private String ip = "192.168.1.103"; // IP 번호
     private int port = 9999; // port 번호
 
     @Override
@@ -62,15 +63,41 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.validateButton:
+            case R.id.validateButton:;
                 System.out.println(line);
                 connect2();
+                while(line == 0){
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+                System.out.println(line);
+                switch (line){
+                    case 48:
+                        show();
+                        break;
+                    case 49:
+                        show2();
+                        break;
+                    }
                 break;
             case R.id.btn_register: // ip 받아오는 버튼
-                connect();
-                show4();
+                if (line2){
+                    connect();
+                    show4();
+                }else{
+                    show3();
+                }
                 break;
         }
+        line = 0;
     }
 
     public void connect() {
@@ -84,6 +111,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 try {
                     socket = new Socket(ip, port);
                     Log.w("서버 접속됨", "서버 접속됨");
+
                 } catch (IOException e1) {
                     Log.w("서버접속못함", "서버접속못함");
                     e1.printStackTrace();
@@ -93,12 +121,10 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
                 try {
                     dos = new DataOutputStream(socket.getOutputStream());// output에 보낼꺼 넣음
+                    dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
                     String msg ="Register:" +et_id.getText().toString() + ":" + et_pass.getText().toString() + ":" + et_passck.getText().toString() + ":" + et_name.getText().toString()
                             + ":" + et_age.getText().toString() + ":" + et_hak.getText().toString() + ":" + et_maj.getText().toString();
-                    dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
                     dos.writeUTF(msg);
-
-
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.w("버퍼", "버퍼생성 잘못됨");
@@ -107,7 +133,6 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 
 // 서버에서 계속 받아옴 - 한번은 문자, 한번은 숫자를 읽음. 순서 맞춰줘야 함.
                 try {
-                    line = dis.readByte();
                     while (true) {
                         line = dis.readByte();
                         Log.w("서버에서 받아온 값 ", "" + line);
@@ -127,6 +152,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
 // 받아오는거
         Thread checkUpdate = new Thread() {
             public void run() {
+
                 try {
                     socket = new Socket(ip, port);
                     Log.w("서버 접속됨", "서버 접속됨");
@@ -139,49 +165,42 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                     String msg = "Register_ID:"+et_id.getText().toString();
                     dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
                     dos.writeUTF(msg);
-
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.w("버퍼", "버퍼생성 잘못됨");
                 }
                 try {
-                    line = dis.readByte();
                     while (true) {
                         line = dis.readByte();
-                        if (line == 49){
-                            show();
-                            line2 = true;
-                        }else {
-                            show2();
-                        }
-                            Log.w("서버에서 받아온 값 ", "" + line);
+                        Log.w("서버에서 받아온 값 ", "" + line);
+                        line2 =true;
                     }
                 } catch (Exception e) {
-
                 }
+
             }
         };
         checkUpdate.start();
-    }
-    void show(){
+        }
+    public void show(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("아이디 중복").setMessage("아이디가 사용가능합니다.");
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    void show2(){
+    public void show2(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("아이디 중복").setMessage("이미 사용중인 아이디입니다.");
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    void show3(){
+    public void show3(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("회원가입").setMessage("아이디 중복검사를 하십시오.");
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    void show4(){
+    public void show4(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("회원가입완료").setMessage("회원가입이 완료되었습니다.");
         AlertDialog alertDialog = builder.create();
