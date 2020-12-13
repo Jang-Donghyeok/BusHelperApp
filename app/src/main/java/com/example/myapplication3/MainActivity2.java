@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -32,10 +33,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     private Handler mHandler;
     private Socket socket;
     byte line;
-    String data;
+    int data;
     boolean line2;
+    String test;
 
-
+    InputStreamReader dis2;
     DataOutputStream dos;
     DataInputStream dis;
 
@@ -163,7 +165,8 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 try {
                     dos = new DataOutputStream(socket.getOutputStream());// output에 보낼꺼 넣음
                     String msg = "Register_ID:"+et_id.getText().toString();
-                    dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
+                    dis = new DataInputStream(socket.getInputStream());// input에 받을꺼 넣어짐
+                    dis2 = new InputStreamReader(socket.getInputStream(), "UTF-8");
                     dos.writeUTF(msg);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -172,6 +175,10 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 try {
                     while (true) {
                         line = dis.readByte();
+                        System.out.println("123");
+                        test = dis.readUTF();
+                        System.out.println("13");
+                        System.out.println(test);
                         Log.w("서버에서 받아온 값 ", "" + line);
                         line2 =true;
                     }
