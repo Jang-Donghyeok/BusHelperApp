@@ -48,6 +48,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.button4:
                 connect();
+                /*
                 final CharSequence[] items = {"사과", "딸기", "오렌지", "수박"};
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
@@ -72,8 +73,8 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
                 // 다이얼로그 보여주기
                 alertDialog.show();
                 break;
+                */
         } // end MyTwo
-
     }
     public void connect() {
         mHandler = new Handler();
@@ -81,7 +82,6 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
 // 받아오는거
         Thread checkUpdate = new Thread() {
             public void run() {
-
 // 서버 접속
                 try {
                     socket = new Socket(ip, port);
@@ -97,7 +97,8 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
                 try {
                     dos = new DataOutputStream(socket.getOutputStream());// output에 보낼꺼 넣음
                     dis = new DataInputStream(socket.getInputStream()); // input에 받을꺼 넣어짐
-                    String msg ="Bus:" + start + ":" + finish;
+                    String msg ="Bus:" + start.getText().toString() + ":" + finish.getText().toString();
+                    System.out.print(msg);
                     dos.writeUTF(msg);
                 } catch (IOException e) {
                     e.printStackTrace();
