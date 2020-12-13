@@ -176,6 +176,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                     while (true) {
                         line = dis.readByte();
                         System.out.println("123");
+                        System.out.println(line);
                         test = dis.readUTF();
                         System.out.println("13");
                         System.out.println(test);
