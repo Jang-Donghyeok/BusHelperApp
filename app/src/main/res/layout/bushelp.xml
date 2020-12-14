@@ -5,33 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="125dp"
-        android:layout_height="96dp"
-        android:layout_marginEnd="45dp"
-        android:text="예약하기
-"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/finish"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.812" />
-
-    <EditText
-        android:id="@+id/start"
-        android:layout_width="189dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginBottom="57dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="출발지"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
-        app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.56"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/finish"
@@ -41,46 +14,51 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="28dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="도착지"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toStartOf="@+id/button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.039" />
+
+    <EditText
+        android:id="@+id/start"
+        android:layout_width="189dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="57dp"
+        android:ems="10"
+        android:hint="출발지"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.56"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="332dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="26dp"
-        android:text="예약취소"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        android:id="@+id/button"
+        android:layout_width="125dp"
+        android:layout_height="96dp"
+        android:layout_marginEnd="45dp"
+        android:text="예약하기"
+        app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintStart_toEndOf="@+id/finish"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.586" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="336dp"
         android:layout_height="39dp"
-        android:layout_marginBottom="1dp"
-        android:text="버스 선택하기"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        android:layout_marginTop="80dp"
+        android:text="예약 취소"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="329dp"
-        android:layout_height="199dp"
-        android:layout_marginBottom="25dp"
-        android:text="버스 정보 및 예약 정보"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <ImageView
         android:id="@+id/imageView3"
