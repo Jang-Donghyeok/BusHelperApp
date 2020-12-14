@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         System.out.println("123");
                         line = dis.readByte();
                         System.out.println(line);
-                        if (line == 1){
+                        if (line == 49){
                             Intent intent = new Intent(
                                     getApplicationContext(), // 현재 화면의 제어권자
                                     MainActivity3.class); // 다음 넘어갈 클래스 지정

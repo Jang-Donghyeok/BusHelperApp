@@ -68,11 +68,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                         e.printStackTrace();
                     }
                 }
+//
                 switch (line){
-                    case 1:
+                    case 48:
                         show();
                         break;
-                    case 2:
+                    case 49:
                         show2();
                         break;
                     }
